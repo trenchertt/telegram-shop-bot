@@ -80,7 +80,7 @@ async def cmd_referral(message: types.Message):
         referrals = 0
     else:
         referrals = result[0]
-    referral_link = f"https://t.me/YourBotName?start=REF_{message.from_user.id}"
+    referral_link = f"https://t.me/testrfrn_bot?start=REF_{message.from_user.id}"
     conn.close()
     await message.answer(f"Your referral link: {referral_link}\nInvited friends: {referrals}")
 
