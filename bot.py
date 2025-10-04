@@ -37,12 +37,12 @@ def init_db():
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Открыть магазин", web_app=types.WebAppInfo(url="https://your-web-app-url.com"))]
+        [InlineKeyboardButton(text="Открыть магазин", web_app=types.WebAppInfo(url="https://telegram-shop-bot-teal.vercel.app"))]
     ])
-    await message.answer("Добро пожаловать в магазин! Нажми кнопку, чтобы открыть Web App, или используй команды: /balance, /categories.", reply_markup=kb)
+    await message.answer("Добро пожаловать в магазин! Нажми кнопку, чтобы открыть Web App, или используй команды: /wallet, /ref.", reply_markup=kb)
 
-# Команда /balance
-@dp.message(Command("balance"))
+# Команда /wallet
+@dp.message(Command("wallet"))
 async def cmd_balance(message: types.Message):
     conn = sqlite3.connect("shop.db")
     c = conn.cursor()
@@ -57,8 +57,8 @@ async def cmd_balance(message: types.Message):
     conn.close()
     await message.answer(f"Ваш баланс: {balance} руб.")
 
-# Команда /categories
-@dp.message(Command("categories"))
+# Команда /ref
+@dp.message(Command("ref"))
 async def cmd_categories(message: types.Message):
     conn = sqlite3.connect("shop.db")
     c = conn.cursor()
