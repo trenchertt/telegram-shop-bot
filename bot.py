@@ -4,11 +4,11 @@ from aiogram.filters import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import sqlite3
 
-# Инициализация бота с токеном
+# Initialize bot with token
 bot = Bot(token="8498877795:AAGYiEaLmFHy15_mo6WYqZHaH3bC5VqmddY")
 dp = Dispatcher()
 
-# Инициализация базы данных
+# Initialize database
 def init_db():
     conn = sqlite3.connect("shop.db")
     c = conn.cursor()
@@ -27,21 +27,21 @@ def init_db():
         category_id INTEGER,
         image_url TEXT
     )""")
-    # Тестовые данные
-    c.execute("INSERT OR IGNORE INTO categories (id, name) VALUES (1, 'Электроника')")
-    c.execute("INSERT OR IGNORE INTO products (id, name, price, category_id, image_url) VALUES (1, 'Телефон', 10000, 1, 'https://example.com/phone.jpg')")
+    # Test data
+    c.execute("INSERT OR IGNORE INTO categories (id, name) VALUES (1, 'Electronics')")
+    c.execute("INSERT OR IGNORE INTO products (id, name, price, category_id, image_url) VALUES (1, 'Phone', 10000, 1, 'https://example.com/phone.jpg')")
     conn.commit()
     conn.close()
 
-# Команда /start
+# Command /start
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Открыть магазин", web_app=types.WebAppInfo(url="https://telegram-shop-bot-teal.vercel.app"))]
+        [InlineKeyboardButton(text="Open Shop", web_app=types.WebAppInfo(url="https://telegram-shop-bot-teal.vercel.app"))]
     ])
-    await message.answer("Добро пожаловать в магазин! Нажми кнопку, чтобы открыть Web App, или используй команды: /wallet, /ref.", reply_markup=kb)
+    await message.answer("Welcome to the shop! Click the button to open the Web App or use commands: /wallet, /ref.", reply_markup=kb)
 
-# Команда /wallet
+# Command /wallet
 @dp.message(Command("wallet"))
 async def cmd_balance(message: types.Message):
     conn = sqlite3.connect("shop.db")
@@ -55,9 +55,9 @@ async def cmd_balance(message: types.Message):
     else:
         balance = result[0]
     conn.close()
-    await message.answer(f"Ваш баланс: {balance} руб.")
+    await message.answer(f"Your balance: {balance} USD")
 
-# Команда /ref
+# Command /ref
 @dp.message(Command("ref"))
 async def cmd_categories(message: types.Message):
     conn = sqlite3.connect("shop.db")
@@ -66,9 +66,9 @@ async def cmd_categories(message: types.Message):
     categories = c.fetchall()
     conn.close()
     if categories:
-        response = "Категории:\n" + "\n".join([cat[0] for cat in categories])
+        response = "Categories:\n" + "\n".join([cat[0] for cat in categories])
     else:
-        response = "Категории пока пусты."
+        response = "Categories are empty."
     await message.answer(response)
 
 async def main():
