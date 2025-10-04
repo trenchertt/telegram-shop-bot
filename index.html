@@ -15,7 +15,7 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            background: #f5f5f5;
+            background: #f9f9fb; /* Мягкий светлый фон, как в iOS */
             overflow-x: hidden;
         }
         .header {
@@ -23,9 +23,9 @@
             justify-content: space-between;
             padding: 15px;
             background: #fff;
-            border-bottom: 1px solid #e0e0e0;
-            border-radius: 0 0 15px 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #e5e5ea;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
         .settings-btn {
             font-size: 24px;
@@ -38,7 +38,7 @@
         }
         .balance {
             font-size: 16px;
-            color: #333;
+            color: #000000;
             font-weight: 500;
         }
         .content {
@@ -50,23 +50,25 @@
         .search-container {
             margin-bottom: 20px;
             padding: 10px;
-            background: #fff;
-            border-radius: 25px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: #f2f2f7;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            max-width: 100%;
         }
         .search-input {
             width: 100%;
-            padding: 10px;
+            padding: 10px 15px;
             border: none;
-            border-radius: 20px;
+            border-radius: 15px;
             font-size: 16px;
             outline: none;
-            background: #f0f0f0;
+            background: #e5e5ea;
             transition: background 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
         }
         .search-input:focus {
             background: #fff;
-            box-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
+            box-shadow: 0 0 10px rgba(46, 125, 50, 0.1);
         }
         .category-list {
             margin-top: 10px;
@@ -75,24 +77,24 @@
             display: flex;
             justify-content: space-around;
             padding: 10px;
-            background: #1a1a1a;
-            border-top: 1px solid #333;
+            background: #fff;
+            border-top: 1px solid #e5e5ea;
             position: sticky;
             bottom: 0;
-            border-radius: 15px 15px 0 0;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
         }
         .footer button {
             background: none;
             border: none;
-            color: #ccc;
+            color: #8e8e93;
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
             width: 33.33%;
             padding: 8px;
-            border-radius: 10px;
+            border-radius: 15px;
             transition: all 0.3s ease;
         }
         .footer button.active {
@@ -102,21 +104,21 @@
         }
         .footer button:hover {
             color: #2e7d32;
-            background: rgba(46, 125, 50, 0.2);
+            background: rgba(46, 125, 50, 0.15);
         }
         .footer button i {
             font-size: 22px;
             margin-bottom: 4px;
         }
         h2 {
-            color: #333;
+            color: #000000;
             margin-top: 0;
             border-bottom: 2px solid #2e7d32;
             padding-bottom: 5px;
             border-radius: 5px 5px 0 0;
         }
         p {
-            color: #666;
+            color: #8e8e93;
             line-height: 1.6;
         }
         ul {
@@ -125,14 +127,15 @@
         }
         ul li {
             background: #fff;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         ul li:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         }
         @keyframes fadeIn {
             from { opacity: 0; }
