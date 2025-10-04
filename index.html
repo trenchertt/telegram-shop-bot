@@ -15,19 +15,23 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            background: #f0f0f0;
+            background: #f5f5f5;
+            overflow-x: hidden;
         }
         .header {
             display: flex;
             justify-content: space-between;
-            padding: 10px;
+            padding: 15px;
             background: #fff;
-            border-bottom: 1px solid #ccc;
+            border-bottom: 1px solid #e0e0e0;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         .settings-btn {
             font-size: 24px;
             color: #2e7d32;
             cursor: pointer;
+            transition: color 0.3s ease;
         }
         .settings-btn:hover {
             color: #1b5e20;
@@ -35,11 +39,34 @@
         .balance {
             font-size: 16px;
             color: #333;
+            font-weight: 500;
         }
         .content {
             flex: 1;
-            padding: 10px;
+            padding: 20px;
             overflow-y: auto;
+            animation: fadeIn 0.5s ease;
+        }
+        .search-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            outline: none;
+            background: #f0f0f0;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .search-input:focus {
+            background: #fff;
+            box-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
         }
         .footer {
             display: flex;
@@ -49,26 +76,64 @@
             border-top: 1px solid #333;
             position: sticky;
             bottom: 0;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
         }
         .footer button {
             background: none;
             border: none;
-            font-size: 14px;
             color: #ccc;
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
             width: 33.33%;
-            padding: 5px;
+            padding: 8px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
         .footer button.active {
             color: #2e7d32;
+            background: rgba(46, 125, 50, 0.1);
             font-weight: 500;
         }
+        .footer button:hover {
+            color: #2e7d32;
+            background: rgba(46, 125, 50, 0.2);
+        }
         .footer button i {
-            font-size: 20px;
-            margin-bottom: 3px;
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+        h2 {
+            color: #333;
+            margin-top: 0;
+            border-bottom: 2px solid #2e7d32;
+            padding-bottom: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        ul li:hover {
+            transform: translateY(-2px);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
@@ -103,7 +168,11 @@
                 if (page === 'home') {
                     contentDiv.innerHTML = '<h2>Welcome!</h2><p>Select a section from the menu below.</p>';
                 } else if (page === 'categories') {
-                    contentDiv.innerHTML = '<h2>Categories</h2><p>Loading...</p>';
+                    contentDiv.innerHTML = `
+                        <div class="search-container">
+                            <input type="text" class="search-input" placeholder="Search categories...">
+                        </div>
+                        <h2>Categories</h2><p>Loading...</p>`;
                     // Fetch categories
                     fetchCategories();
                 } else if (page === 'profile') {
@@ -118,8 +187,23 @@
             try {
                 const response = await fetch('https://your-backend-url.com/api/categories');
                 const categories = await response.json();
-                contentDiv.innerHTML = '<h2>Categories</h2><ul>' + 
-                    categories.map(cat => `<li>${cat.name}</li>`).join('') + '</ul>';
+                const contentDiv = document.getElementById('content');
+                contentDiv.innerHTML = `
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Search categories...">
+                    </div>
+                    <h2>Categories</h2>
+                    <ul>${categories.map(cat => `<li>${cat.name}</li>`).join('')}</ul>`;
+                // Add search functionality
+                const searchInput = contentDiv.querySelector('.search-input');
+                searchInput.addEventListener('input', () => {
+                    const query = searchInput.value.toLowerCase();
+                    const items = contentDiv.querySelectorAll('ul li');
+                    items.forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        item.style.display = text.includes(query) ? 'block' : 'none';
+                    });
+                });
             } catch (e) {
                 contentDiv.innerHTML = '<h2>Error</h2><p>Failed to load categories.</p>';
             }
