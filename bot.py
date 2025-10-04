@@ -14,7 +14,8 @@ def init_db():
     c = conn.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS users (
         tg_id TEXT PRIMARY KEY,
-        balance REAL DEFAULT 100.0
+        balance REAL DEFAULT 100.0,
+        referrals INTEGER DEFAULT 0
     )""")
     c.execute("""CREATE TABLE IF NOT EXISTS categories (
         id INTEGER PRIMARY KEY,
@@ -39,6 +40,15 @@ async def cmd_start(message: types.Message):
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Open Shop", web_app=types.WebAppInfo(url="https://telegram-shop-bot-teal.vercel.app"))]
     ])
+    referral_id = message.text.split()[1] if len(message.text.split()) > 1 else None
+    if referral_id:
+        conn = sqlite3.connect("shop.db")
+        c = conn.cursor()
+        referrer = c.execute("SELECT tg_id, referrals FROM users WHERE tg_id = ?", (referral_id,)).fetchone()
+        if referrer:
+            c.execute("UPDATE users SET referrals = referrals + 1 WHERE tg_id = ?", (referral_id,))
+            conn.commit()
+        conn.close()
     await message.answer("Welcome to the shop! Click the button to open the Web App or use commands: /wallet, /ref.", reply_markup=kb)
 
 # Command /wallet
@@ -59,17 +69,20 @@ async def cmd_balance(message: types.Message):
 
 # Command /ref
 @dp.message(Command("ref"))
-async def cmd_categories(message: types.Message):
+async def cmd_referral(message: types.Message):
     conn = sqlite3.connect("shop.db")
     c = conn.cursor()
-    c.execute("SELECT name FROM categories")
-    categories = c.fetchall()
-    conn.close()
-    if categories:
-        response = "Categories:\n" + "\n".join([cat[0] for cat in categories])
+    c.execute("SELECT referrals FROM users WHERE tg_id = ?", (str(message.from_user.id),))
+    result = c.fetchone()
+    if not result:
+        c.execute("INSERT INTO users (tg_id, referrals) VALUES (?, 0)", (str(message.from_user.id),))
+        conn.commit()
+        referrals = 0
     else:
-        response = "Categories are empty."
-    await message.answer(response)
+        referrals = result[0]
+    referral_link = f"https://t.me/YourBotName?start=REF_{message.from_user.id}"
+    conn.close()
+    await message.answer(f"Your referral link: {referral_link}\nInvited friends: {referrals}")
 
 async def main():
     init_db()
