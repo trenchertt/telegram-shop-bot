@@ -1,0 +1,4 @@
+venv/
+*.pyc
+shop.db
+__pycache__/
