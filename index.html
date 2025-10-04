@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
@@ -22,11 +24,17 @@
             background: #fff;
             border-bottom: 1px solid #ccc;
         }
-        .settings-btn, .balance {
-            font-size: 16px;
+        .settings-btn {
+            font-size: 24px;
+            color: #2e7d32;
+            cursor: pointer;
         }
         .settings-btn:hover {
-            cursor: pointer;
+            color: #1b5e20;
+        }
+        .balance {
+            font-size: 16px;
+            color: #333;
         }
         .content {
             flex: 1;
@@ -37,24 +45,36 @@
             display: flex;
             justify-content: space-around;
             padding: 10px;
-            background: #fff;
-            border-top: 1px solid #ccc;
+            background: #1a1a1a;
+            border-top: 1px solid #333;
+            position: sticky;
+            bottom: 0;
         }
         .footer button {
             background: none;
             border: none;
-            font-size: 16px;
+            font-size: 14px;
+            color: #ccc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             cursor: pointer;
+            width: 33.33%;
+            padding: 5px;
         }
         .footer button.active {
-            font-weight: bold;
-            color: #0088cc;
+            color: #2e7d32;
+            font-weight: 500;
+        }
+        .footer button i {
+            font-size: 20px;
+            margin-bottom: 3px;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <span class="settings-btn">⚙️ Settings</span>
+        <span class="settings-btn">⚙️</span>
         <span class="balance">Balance: <span id="balance">100 USD</span></span>
     </div>
     <div class="content" id="content">
@@ -62,9 +82,9 @@
         <p>Select a section from the menu below.</p>
     </div>
     <div class="footer">
-        <button class="nav-btn active" data-page="home">Home</button>
-        <button class="nav-btn" data-page="categories">Categories</button>
-        <button class="nav-btn" data-page="profile">Profile</button>
+        <button class="nav-btn active" data-page="home"><i class="fas fa-home"></i>Home</button>
+        <button class="nav-btn" data-page="categories"><i class="fas fa-list"></i>Categories</button>
+        <button class="nav-btn" data-page="profile"><i class="fas fa-user"></i>Profile</button>
     </div>
 
     <script>
